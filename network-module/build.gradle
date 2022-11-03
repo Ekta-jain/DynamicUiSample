@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -37,4 +40,20 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    // Hilt dependencies
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-android-compiler:2.44"
+
+    //  Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+
+    //  Lifecycle Components
+  //
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.6.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.12.0"
+    implementation "com.google.code.gson:gson:2.8.6"
 }
