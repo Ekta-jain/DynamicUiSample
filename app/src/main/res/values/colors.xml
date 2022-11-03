@@ -11,5 +11,6 @@
     <color name="lightGreyColor">#E9E9EA</color>
     <color name="EditGreyColor">#DDDDEA</color>
     <color name="EditHintColor">#7C7171</color>
+    <color name="orangeColor">#E4A548</color>
 
 </resources>
