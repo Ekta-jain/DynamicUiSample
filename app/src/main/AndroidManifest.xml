@@ -3,21 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.e4ekta.dynamicuisample">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".HiltApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:name=".HiltApplication"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DynamicUiSample"
         tools:targetApi="31">
         <activity
+            android:name=".src.view.SecondActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".src.view.MainActivity"
+            android:theme="@style/AppThemeNoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

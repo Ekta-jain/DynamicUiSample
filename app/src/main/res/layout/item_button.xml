@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_green_dark"
+    android:fontFamily="sans-serif-medium"
+    android:padding="@dimen/_10sdp"
+    android:gravity="center"
+    android:textAllCaps="true"
+    android:layout_margin="@dimen/_10sdp"
+    android:textColor="@color/white"
+    android:textSize="@dimen/_20sdp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Submit" />
