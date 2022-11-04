@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DynamicUiSample</string>
+    <string name="validation_msg">All fields are mandatory</string>
 </resources>
