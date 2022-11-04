@@ -3,6 +3,7 @@ package com.e4ekta.dynamicuisample.src.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.e4ekta.dynamicuisample.R
@@ -104,46 +106,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun setObserver() {
         mainViewModel.fetchCustomUI().observe(this) {
+            Log.i("Stats","="+it.status)
             when (it.status) {
+
                 Resource.Status.SUCCESS -> {
-                    setViewsVisibility(true, false, false)
                     it.data?.let {
                         loadImageFromUrl(mBinding.includeMainSection.ivHeaderImage, it.logoUrl)
                         mBinding.includeMainSection.tvHeaderTitle.text = it.headingText
                         uiDataList.addAll(it.uidata)
                         setUiData(uiDataList)
                     }
-
                 }
+
                 Resource.Status.ERROR -> {
-                    setViewsVisibility(false, true, false)
+                    mBinding.includeErrorSection.root.isVisible = true
                     mBinding.includeErrorSection.tvMessage.text = it.message
                 }
+
                 Resource.Status.LOADING -> {
-                    setViewsVisibility(false, false, true)
-                    showLoadingState()
+                    mBinding.includeLoaderSection.root.isVisible = it.message == "true"
                 }
             }
         }
-
-        mainViewModel.loadingStateLiveData.observe(this) {
-            if(it){
-                setViewsVisibility(false, false, true)
-            }else{
-                setViewsVisibility(true, false, false)
-            }
-        }
-
-    }
-
-    private fun setViewsVisibility(showMain:Boolean, showError:Boolean, showLoader:Boolean) {
-        mBinding.includeMainSection.root.visibility = View.VISIBLE
-        mBinding.includeErrorSection.root.visibility = View.GONE
-        mBinding.includeLoaderSection.root.visibility = View.GONE
-    }
-
-    private fun showLoadingState(){
-
     }
 
     private fun loadImageFromUrl(imageView:AppCompatImageView, url :String){

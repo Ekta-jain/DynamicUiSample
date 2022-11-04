@@ -9,27 +9,27 @@ abstract class BaseDataSource {
 
     protected suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
         try {
-
+            Resource.loading(null,"true")
             val response = call()
             if (response.isSuccessful) {
+                Resource.loading(null, "true")
                 val body = response.body()
-                response.code()
                 if (body != null) return Resource.success(body)
             }
             if (response.errorBody() != null) {
-                return error("Received Failure Response")
+                return error("Received failure response !!")
             }
             return error(" ${response.code()} ${response.message()}")
         } catch (e: Throwable) {
-            when (e) {
+            return when (e) {
                 is IOException -> {
-                    return error("Check Your Internet Connection!!")
+                    error("Check Your Internet Connection..")
                 }
                 is HttpException -> {
-                    return error("Unexpected response")
+                    error("Unexpected response")
                 }
                 else -> {
-                    return error("something went wrong")
+                    error("Something Went Wrong")
                 }
             }
         } catch (e: Exception) {

@@ -19,10 +19,12 @@
         <activity
             android:name=".src.view.SecondActivity"
             android:theme="@style/AppThemeNoActionBar"
+            android:screenOrientation="fullSensor"
             android:exported="false" />
         <activity
             android:name=".src.view.MainActivity"
             android:theme="@style/AppThemeNoActionBar"
+            android:screenOrientation="fullSensor"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
