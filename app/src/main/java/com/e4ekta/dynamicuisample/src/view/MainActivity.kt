@@ -89,12 +89,13 @@ class MainActivity : AppCompatActivity() {
                     showError = true
                 }else{
                     sendInputDataMap[view.getTag().toString()] = view.text.toString()
-                    navigateToSecondActivity(sendInputDataMap)
                 }
             }
         }
         if(showError){
             Toast.makeText(applicationContext,getString(R.string.validation_msg),Toast.LENGTH_LONG).show()
+        }else{
+            navigateToSecondActivity(sendInputDataMap)
         }
     }
 
