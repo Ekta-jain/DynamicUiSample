@@ -3,12 +3,12 @@ package com.e4ekta.dynamicuisample.src.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -41,28 +41,28 @@ class MainActivity : AppCompatActivity() {
     * setUiData is used to inflate dynamic Ui according to json
     * */
     private fun setUiData(uiDataList: List<UiData>) {
-        mBinding.linearContainer.removeAllViews()
+        mBinding.includeMainSection.linearContainer.removeAllViews()
         val inflater = LayoutInflater.from(applicationContext)
         uiDataList.forEach {
             when (it.uitype.lowercase()) {
                   UiTypeEnum.label.toString() -> {
-                    val textView  = inflater.inflate(R.layout.item_text_view, mBinding.linearContainer, false)
+                    val textView  = inflater.inflate(R.layout.item_text_view, mBinding.includeMainSection.linearContainer, false)
                     (textView as TextView).text = it.value
                     textView.setTag(it.key)
-                    mBinding.linearContainer.addView(textView)
+                    mBinding.includeMainSection.linearContainer.addView(textView)
                 }
                 UiTypeEnum.edittext.toString() -> {
-                    val editText = inflater.inflate(R.layout.item_edit_text, mBinding.linearContainer, false)
+                    val editText = inflater.inflate(R.layout.item_edit_text, mBinding.includeMainSection.linearContainer, false)
                     (editText as EditText).hint = it.hint
                     editText.clearFocus()
                     editText.setTag(it.key)
-                    mBinding.linearContainer.addView(editText)
+                    mBinding.includeMainSection.linearContainer.addView(editText)
                 }
                 UiTypeEnum.button.toString() -> {
-                    val button = inflater.inflate(R.layout.item_button, mBinding.linearContainer, false)
+                    val button = inflater.inflate(R.layout.item_button, mBinding.includeMainSection.linearContainer, false)
                     (button as Button).text = it.value
                     button.setTag(it.key)
-                    mBinding.linearContainer.addView(button)
+                    mBinding.includeMainSection.linearContainer.addView(button)
                     button.setOnClickListener {
                         submitForm()
                     }
@@ -73,18 +73,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun submitForm() {
         val sendInputDataMap = HashMap<String, String>()
-        val childCount: Int = mBinding.linearContainer.childCount
+        val childCount: Int = mBinding.includeMainSection.linearContainer.childCount
         // here we are traverse over childCount existing in linear container
+        var showError = false
         for (i in 0 until childCount) {
-            val view: View = mBinding.linearContainer.getChildAt(i)
+            val view: View = mBinding.includeMainSection.linearContainer.getChildAt(i)
             if (view is EditText) {
                /* if view is edittext and Add that value in HashMap
                 HashMap key = View Tag
                 HashMap Value = Input Data entered by user
                * */
-                sendInputDataMap[view.getTag().toString()] = view.text.toString()
-                navigateToSecondActivity(sendInputDataMap)
+                if (view.text.isBlank() && view.text.isEmpty()) {
+                    showError = true
+                }else{
+                    sendInputDataMap[view.getTag().toString()] = view.text.toString()
+                    navigateToSecondActivity(sendInputDataMap)
+                }
             }
+        }
+        if(showError){
+            Toast.makeText(applicationContext,getString(R.string.validation_msg),Toast.LENGTH_LONG).show()
         }
     }
 
@@ -98,27 +106,45 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.fetchCustomUI().observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
+                    setViewsVisibility(true, false, false)
                     it.data?.let {
-                        loadImageFromUrl(mBinding.ivHeaderImage, it.logoUrl)
-                        mBinding.tvHeaderTitle.text = it.headingText
+                        loadImageFromUrl(mBinding.includeMainSection.ivHeaderImage, it.logoUrl)
+                        mBinding.includeMainSection.tvHeaderTitle.text = it.headingText
                         uiDataList.addAll(it.uidata)
                         setUiData(uiDataList)
                     }
 
                 }
                 Resource.Status.ERROR -> {
-
+                    setViewsVisibility(false, true, false)
+                    mBinding.includeErrorSection.tvMessage.text = it.message
                 }
                 Resource.Status.LOADING -> {
-                    //     showLoadingState()
+                    setViewsVisibility(false, false, true)
+                    showLoadingState()
                 }
             }
         }
 
-        //launchViewModel.loadingStateLiveData.observe(this, Observer { handleLoadingState() })
+        mainViewModel.loadingStateLiveData.observe(this) {
+            if(it){
+                setViewsVisibility(false, false, true)
+            }else{
+                setViewsVisibility(true, false, false)
+            }
+        }
+
     }
 
-   // private fun showLoadingState() = _loadingStateLiveData.postValue(true)
+    private fun setViewsVisibility(showMain:Boolean, showError:Boolean, showLoader:Boolean) {
+        mBinding.includeMainSection.root.visibility = View.VISIBLE
+        mBinding.includeErrorSection.root.visibility = View.GONE
+        mBinding.includeLoaderSection.root.visibility = View.GONE
+    }
+
+    private fun showLoadingState(){
+
+    }
 
     private fun loadImageFromUrl(imageView:AppCompatImageView, url :String){
         Glide.with(applicationContext)

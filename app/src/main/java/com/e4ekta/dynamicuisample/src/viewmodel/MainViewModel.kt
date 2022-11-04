@@ -21,8 +21,10 @@ class MainViewModel @Inject constructor(private val mainRepository: MainReposito
     }
 
     fun fetchCustomUI() = liveData {
+        _loadingStateLiveData.postValue(true)
         val customUi = mainRepository.fetchCustomUI()
         emit(customUi)
+        _loadingStateLiveData.postValue(false)
     }
 
 }
