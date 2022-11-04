@@ -18,6 +18,13 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    /* Added Prod flavor*/
+    flavorDimensions "flavor"
+    productFlavors {
+        prod {
+            dimension "flavor"
+        }
+    }
 
     buildTypes {
         release {
