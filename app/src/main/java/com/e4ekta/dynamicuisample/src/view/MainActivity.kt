@@ -3,18 +3,17 @@ package com.e4ekta.dynamicuisample.src.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.e4ekta.dynamicuisample.R
 import com.e4ekta.dynamicuisample.databinding.ActivityMainBinding
@@ -29,13 +28,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel by  viewModels()
-    private lateinit var  mBinding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var mBinding: ActivityMainBinding
     private var uiDataList = ArrayList<UiData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setObserver()
     }
 
