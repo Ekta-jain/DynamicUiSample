@@ -106,11 +106,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObserver() {
-        mainViewModel.fetchCustomUI().observe(this) {
-            Log.i("Stats","="+it.status)
+        mainViewModel.getFetchUsers().observe(this) {
             when (it.status) {
 
                 Resource.Status.SUCCESS -> {
+                    mBinding.includeLoaderSection.root.isVisible = false
+                    mBinding.includeMainSection.root.isVisible = true
                     it.data?.let {
                         loadImageFromUrl(mBinding.includeMainSection.ivHeaderImage, it.logoUrl)
                         mBinding.includeMainSection.tvHeaderTitle.text = it.headingText
@@ -125,7 +126,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.LOADING -> {
-                    mBinding.includeLoaderSection.root.isVisible = it.message == "true"
+                    mBinding.includeLoaderSection.root.isVisible = true
+                    mBinding.includeMainSection.root.isVisible = false
                 }
             }
         }
