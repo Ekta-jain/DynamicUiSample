@@ -18,6 +18,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    flavorDimensions "flavor"
+    productFlavors {
+        prod {
+            dimension "flavor"
+        }
+    }
 
     buildTypes {
         release {
@@ -42,8 +48,8 @@ android {
 
 dependencies {
 
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation 'androidx.core:core-ktx:1.9.0'
+    //implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation project(path: ':network-module')
@@ -65,7 +71,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
 
     // Activity KTX for viewModels()
-    implementation "androidx.activity:activity-ktx:1.6.1"
+    implementation "androidx.activity:activity-ktx:1.5.0"
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
